@@ -7,7 +7,7 @@
 # Last Modified:   Fri 12 Jan 2018 07:21:32 PM CST
 
 if [[ -f `pwd`/sharedfuncs ]]; then
-    source `pwd`/sharedfuncs
+    source sharedfuncs
 else
     echo "missing file: sharedfuncs"
     exit 1
@@ -22,14 +22,14 @@ select_keymap() {
     PS3="$prompt1"
     print_info "The KEYMAP variable is specified in the /etc/rc.conf file. It defines what keymap the keyboard is in the virtual consoles. Keytable file are provided by the kbd package."
     echo "keymap list in /usr/share/kbd/keymaps"
-        select KEYMAP in "${Keymap_list[@]}"; do
-            if contains_element "$KEYMAP" "${keymap_list[@]}"; then
-                loadkeys "$KEYMAP";
-                break
-            else
-                invalid_option
-            fi
-        done
+    select KEYMAP in "${keymap_list[@]}"; do
+        if contains_element "$KEYMAP" "${keymap_list[@]}"; then
+            loadkeys "$KEYMAP";
+            break
+        else
+            invalid_option
+        fi
+    done
 }
 #}}}
 
@@ -899,7 +899,7 @@ finish() {
 
 print_title "https://wiki.archlinux.org/index.php/Arch_Install_Scripts"
 print_info "The Arch Install Scripts are a set of BASH scripts that simplify Arch Installation"
-pause_function
+#pause_function
 check_boot_system
 check_connection
 check_trim
