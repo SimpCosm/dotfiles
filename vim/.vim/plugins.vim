@@ -1,47 +1,21 @@
-"legacy
-"Plugin 'chrisbra/unicode.vim'
-"Plugin 'vim-scripts/Improved-AnsiEsc'
-set runtimepath+=~/.vim/
+" VIM Plugin
+" Using Vundle as the plugin manager
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent call system('mkdir -p ~/.vim/{autoload,bundle,cache,undo,backups,swaps}')
-  silent call system('curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
-  execute 'source  ~/.vim/autoload/plug.vim'
-  augroup plugsetup
-    au!
-    autocmd VimEnter * PlugInstall
-  augroup end
-endif
+filetype off
+set runtimepath+=~/.vim/bundle/Vundle.vim
 
-call plug#begin('~/.vim/plugged')
+call vundle#begin()
 
-" colors
-Plug 'xero/sourcerer.vim'
-Plug 'xero/blaquemagick.vim'
-Plug 'xero/vim-noctu'
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
-" features
-Plug 'shougo/deoplete.nvim', has('nvim') ? {} : { 'do': [':UpdateRemotePlugins', ':set runtimepath+=~/.vim/plugged/deoplete.nvim/'] }
-Plug 'ajh17/VimCompletesMe'
-Plug 'w0rp/ale'
-Plug 'sheerun/vim-polyglot'
-Plug 'isa/vim-matchit'
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'itchyny/lightline.vim'
-Plug 'lilydjwg/colorizer'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-vinegar'
-Plug 'rking/ag.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'simeji/winresizer'
-Plug 'junegunn/gv.vim', { 'on': 'GV' }
-Plug 'roxma/vim-tmux-clipboard'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-Plug 'junegunn/limelight.vim', { 'on': 'Goyo' }
-Plug 'matze/vim-move'
-Plug 'tpope/tpope-vim-abolish'
-Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
-Plug 'godlygeek/tabular'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'vim-airline/vim-airline'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'godlygeek/tabular'
 
-call plug#end()
+call vundle#end()

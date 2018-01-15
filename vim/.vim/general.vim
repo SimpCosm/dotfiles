@@ -1,20 +1,80 @@
-" use vim settings, rather than vi settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sections:
+"       -> General
+"       -> VIM User Interface
+"       -> Colors and Fonts
+"       -> Files and Backups
+"       -> Text, tab and indent related
+"       -> Status Line
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Genereal
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Use vim settings, rather than vi settings
 " must be first, because it changes other options as a side effect
 set nocompatible
 
-" security
-set modelines=0
+" Set how many lines of history VIM has to remember
+set history=500
 
-" hide buffers, not close them
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" :W sudo saves the file
+" (useful for handling the permission-denied error)
+command W w !sudo tee % > /dev/null
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM User Interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Show the line and column number of the cursor position
+set ruler
+" Height of the command bar
+set cmdheight=2
+set laststatus=2
+" Add a bit extra margin to the left
+set foldcolumn=1
+
+set number
+
+" Hide buffers, not close them
 set hidden
 
-" maintain undo history between sessions
-set undofile
-set undodir=~/.vim/undo
-set noswapfile
+" Don't redraw while executing macros (good performance config)
+set lazyredraw
 
-" fuzzy find
-set path+=**
+" Make backspace behave in a sane manner
+set backspace=indent,eol,start
+
+" case insensitive search
+set ignorecase
+set smartcase
+set infercase
+
+" Highlight search results
+set hlsearch
+set incsearch
+
+" Show matching brackets when text indicator is over them
+set showmatch
+" How many tenths of a second to blink when matching brackets
+set matchtime=2
+
 " lazy file name tab completion
 set wildmode=longest,list,full
 set wildmenu
@@ -31,51 +91,77 @@ set wildignore+=*.doc,*.pdf,*.cbr,*.cbz
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz,*.kgb
 set wildignore+=*.swp,.lock,.DS_Store,._*
 
-" case insensitive search
-set ignorecase
-set smartcase
-set infercase
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" the /g flag on :s substitutions by default
-set gdefault
+" Enable syntax highlighting
+syntax enable
 
-" make backspace behave in a sane manner
-set backspace=indent,eol,start
+set background=dark
 
-" searching
-set hlsearch
-set incsearch
-if has("nvim")
-  set inccommand=split
+try
+    colorschem=desert
+catch
+endtry
+
+" Enable 256 colors palette in Gnome Terminal
+if $COLORTERM == 'gnome-terminal'
+    set t_Co=256
 endif
 
+" Set extra options when running in GUI mode
+if has("gui_running")
+    set guioptions-=T
+    set guioptions-=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+endif
 
-" use indents of 4 spaces
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git etc. anyway...
+set nobackup
+set nowb
+set noswapfile
+
+" maintain undo history between sessions
+set undofile
+set undodir=~/.vim/undo
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Use spaces instead of tabs
+set expandtab
+set smarttab
+
+" 1 tab == 4 spaces
 set shiftwidth=4
-
-" tabs are tabs
-set noexpandtab
-
-" an indentation every four columns
 set tabstop=4
-
-" let backspace delete indent
 set softtabstop=4
 
 " enable auto indentation
 set autoindent
+set smartindent
 
-" remove trailing whitespaces and ^M chars
-augroup ws
-  au!
-  autocmd FileType c,cpp,java,php,js,json,css,scss,sass,py,rb,coffee,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-augroup end
+" Lines longer than the width of the window will wrap
+set wrap
+set linebreak
+set textwidth=500
 
-" set leader key to comma
-let mapleader=","
-
-" new coffee pasta commands
-"vnoremap <silent> <leader>y :w !xsel -i -b<CR>
-"nnoremap <silent> <leader>y V:w !xsel -i -b<CR>
-"nnoremap <silent> <leader>p :silent :r !xsel -o -b<CR>
-set clipboard^=unnamedplus
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Tailing chars
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Show tailing whitespaces
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
