@@ -101,10 +101,10 @@ syntax enable
 
 set background=dark
 
-try
-    colorschem=desert
-catch
-endtry
+"try
+"    colorscheme peaksea
+"catch
+"endtry
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
