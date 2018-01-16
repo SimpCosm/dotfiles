@@ -17,5 +17,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'godlygeek/tabular'
+Plugin 'valloric/youcompleteme'
+Plugin 'Raimondi/delimitMate'
 
 call vundle#end()
