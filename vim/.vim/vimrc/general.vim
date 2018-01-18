@@ -67,7 +67,7 @@ set lazyredraw
 set backspace=indent,eol,start
 
 " case insensitive search
-set ignorecase
+"set ignorecase
 set smartcase
 set infercase
 
