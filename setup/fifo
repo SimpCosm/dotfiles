@@ -96,9 +96,9 @@ configure_mirrorlist() {
     # Backup and replace current mirrorlist file (if new file is non-zero)
     if [[ -s ${tmpfile} ]]; then
         {   echo " Backing up the original mirrorlist..."
-            mv -i /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig; } &&
+            mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig; } &&
         {   echo " Rotating the new list into place..."
-            mv -i ${tmpfile} /etc/pacman.d/mirrorlist; }
+            mv ${tmpfile} /etc/pacman.d/mirrorlist; }
     else
         echo " Unable to update, could not download list."
     fi
@@ -914,8 +914,8 @@ automatic_mode() {
     print_danger "\tUse this mode only if you already know all the option.\n\tYou won't be able to select anything later."
     read_input_text "Enable Automatic Mode"
     if [[ $OPTION == y ]]; then
-        # $EDITOR ${AUI_DIR}/filo.automode
-        source ${AUI_DIR}/filo.automode
+        # $EDITOR ${ARCH_DIR}/fifo.automode
+        source ${ARCH_DIR}/fifo.automode
         echo -e "The installation will start now."
         pause_function
         AUTOMATIC_MODE=1
@@ -930,6 +930,8 @@ check_boot_system
 check_connection
 check_trim
 pacman -Sy
+automatic_mode
+
 while true
 do
     print_title "Archlinux Ultimate Install"
@@ -947,9 +949,10 @@ do
     echo "12) $(mainmenu_item "${checklist[12]}" "Install Bootloader"       "${bootloader}" )"
     echo "13) $(mainmenu_item "${checklist[13]}" "Reboot Password")"
     echo ""
-    echo " d) Done"
+    echo " q) Quit"
     echo ""
-    read_input_options
+    MAINMENU+=" q"
+    read_input_options "$MAINMENU"
     for OPT in ${OPTIONS[@]}; do
         case "$OPT" in
             1)
@@ -1009,7 +1012,7 @@ do
                 root_password
                 checklist[13]=1
                 ;;
-            "d")
+            "q")
                 finish
                 ;;
             *)
