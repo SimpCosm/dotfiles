@@ -19,21 +19,17 @@ fi
 select_keymap() {
     print_title "KEYMAP - https://wiki.archlinux.org/index/KEYMAP"
     keymap_list=("ANSI-dvorak" "amiga-de" "amiga-us" "applkey" "atari-de" "atari-se" "atari-uk-falcon" "atari-us" "azerty" "backspace" "bashkir" "be-latin1" "bg-cp1251" "bg-cp855" "bg_bds-cp1251" "bg_bds-utf8" "bg_pho-cp1251" "bg_pho-utf8" "br-abnt" "br-abnt2" "br-latin1-abnt2" "br-latin1-us" "by" "by-cp1251" "bywin-cp1251" "cf" "colemak" "croat" "ctrl" "cz" "cz-cp1250" "cz-lat2" "cz-lat2-prog" "cz-qwertz" "cz-us-qwertz" "de" "de-latin1" "de-latin1-nodeadkeys" "de-mobii" "de_CH-latin1" "de_alt_UTF-8" "defkeymap" "defkeymap_V1.0" "dk" "dk-latin1" "dvorak" "dvorak-ca-fr" "dvorak-es" "dvorak-fr" "dvorak-l" "dvorak-la" "dvorak-programmer" "dvorak-r" "dvorak-ru" "dvorak-sv-a1" "dvorak-sv-a5" "dvorak-uk" "emacs" "emacs2" "es" "es-cp850" "es-olpc" "et" "et-nodeadkeys" "euro" "euro1" "euro2" "fi" "fr" "fr-bepo" "fr-bepo-latin9" "fr-latin1" "fr-latin9" "fr-pc" "fr_CH" "fr_CH-latin1" "gr" "gr-pc" "hu" "hu101" "il" "il-heb" "il-phonetic" "is-latin1" "is-latin1-us" "it" "it-ibm" "it2" "jp106" "kazakh" "keypad" "ky_alt_sh-UTF-8" "kyrgyz" "la-latin1" "lt" "lt.baltic" "lt.l4" "lv" "lv-tilde" "mac-be" "mac-de-latin1" "mac-de-latin1-nodeadkeys" "mac-de_CH" "mac-dk-latin1" "mac-dvorak" "mac-es" "mac-euro" "mac-euro2" "mac-fi-latin1" "mac-fr" "mac-fr_CH-latin1" "mac-it" "mac-pl" "mac-pt-latin1" "mac-se" "mac-template" "mac-uk" "mac-us" "mk" "mk-cp1251" "mk-utf" "mk0" "nl" "nl2" "no" "no-dvorak" "no-latin1" "pc110" "pl" "pl1" "pl2" "pl3" "pl4" "pt-latin1" "pt-latin9" "pt-olpc" "ro" "ro_std" "ro_win" "ru" "ru-cp1251" "ru-ms" "ru-yawerty" "ru1" "ru2" "ru3" "ru4" "ru_win" "ruwin_alt-CP1251" "ruwin_alt-KOI8-R" "ruwin_alt-UTF-8" "ruwin_alt_sh-UTF-8" "ruwin_cplk-CP1251" "ruwin_cplk-KOI8-R" "ruwin_cplk-UTF-8" "ruwin_ct_sh-CP1251" "ruwin_ct_sh-KOI8-R" "ruwin_ct_sh-UTF-8" "ruwin_ctrl-CP1251" "ruwin_ctrl-KOI8-R" "ruwin_ctrl-UTF-8" "se-fi-ir209" "se-fi-lat6" "se-ir209" "se-lat6" "sg" "sg-latin1" "sg-latin1-lk450" "sk-prog-qwerty" "sk-prog-qwertz" "sk-qwerty" "sk-qwertz" "slovene" "sr-cy" "sun-pl" "sun-pl-altgraph" "sundvorak" "sunkeymap" "sunt4-es" "sunt4-fi-latin1" "sunt4-no-latin1" "sunt5-cz-us" "sunt5-de-latin1" "sunt5-es" "sunt5-fi-latin1" "sunt5-fr-latin1" "sunt5-ru" "sunt5-uk" "sunt5-us-cz" "sunt6-uk" "sv-latin1" "tj_alt-UTF8" "tr_f-latin5" "tr_q-latin5" "tralt" "trf" "trf-fgGIod" "trq" "ttwin_alt-UTF-8" "ttwin_cplk-UTF-8" "ttwin_ct_sh-UTF-8" "ttwin_ctrl-UTF-8" "ua" "ua-cp1251" "ua-utf" "ua-utf-ws" "ua-ws" "uk" "unicode" "us" "us-acentos" "wangbe" "wangbe2" "windowkeys");
+    PS3="$prompt1"
     print_info "The KEYMAP variable is specified in the /etc/rc.conf file. It defines what keymap the keyboard is in the virtual consoles. Keytable file are provided by the kbd package."
     echo "keymap list in /usr/share/kbd/keymaps"
-    if [[ $AUTOMATIC_MODE -eq 1 ]]; then
-        loadkeys "$KEYMAP";
-    else
-        PS3="$prompt1"
-        select KEYMAP in "${keymap_list[@]}"; do
-            if contains_element "$KEYMAP" "${keymap_list[@]}"; then
-                loadkeys "$KEYMAP";
-                break
-            else
-                invalid_option
-            fi
-        done
-    fi
+    select KEYMAP in "${keymap_list[@]}"; do
+        if contains_element "$KEYMAP" "${keymap_list[@]}"; then
+            loadkeys "$KEYMAP";
+            break
+        else
+            invalid_option
+        fi
+    done
 }
 #}}}
 
@@ -41,20 +37,16 @@ select_keymap() {
 select_editor() {
     print_title "DEFAULT EDITOR"
     editors_list=("emacs" "nano" "vi" "vim" "neovim" "zile");
-    if [[ $AUTOMATIC_MODE -eq 1 ]]; then
-        package_install "$EDITOR";
-    else
-        PS3="$prompt1"
-        echo -e "Select editor\n"
-        select EDITOR in "${editors_list[@]}"; do
-            if contains_element "$EDITOR" "${editors_list[@]}"; then
-                package_install "$EDITOR"
-                break
-            else
-                invalid_option
-            fi
-        done
-    fi
+    PS3="$prompt1"
+    echo -e "Select editor\n"
+    select EDITOR in "${editors_list[@]}"; do
+        if contains_element "$EDITOR" "${editors_list[@]}"; then
+            package_install "$EDITOR"
+            break
+        else
+            invalid_option
+        fi
+    done
 }
 #}}}
 
@@ -63,26 +55,24 @@ configure_mirrorlist() {
     local countries_code=("AU" "AT" "BY" "BE" "BR" "BG" "CA" "CL" "CN" "CO" "CZ" "DK" "EE" "FI" "FR" "DE" "GR" "HK" "HU" "ID" "IN" "IR" "IE" "IL" "IT" "JP" "KZ" "KR" "LV" "LU" "MK" "NL" "NC" "NZ" "NO" "PL" "PT" "RO" "RU" "RS" "SG" "SK" "ZA" "ES" "LK" "SE" "CH" "TW" "TR" "UA" "GB" "US" "UZ" "VN")
     local countries_name=("Australia" "Austria" "Belarus" "Belgium" "Brazil" "Bulgaria" "Canada" "Chile" "China" "Colombia" "Czech Republic" "Denmark" "Estonia" "Finland" "France" "Germany" "Greece" "Hong Kong" "Hungary" "Indonesia" "India" "Iran" "Ireland" "Israel" "Italy" "Japan" "Kazakhstan" "Korea" "Latvia" "Luxembourg" "Macedonia" "Netherlands" "New Caledonia" "New Zealand" "Norway" "Poland" "Portugal" "Romania" "Russia" "Serbia" "Singapore" "Slovakia" "South Africa" "Spain" "Sri Lanka" "Sweden" "Switzerland" "Taiwan" "Turkey" "Ukraine" "United Kingdom" "United States" "Uzbekistan" "Viet Nam")
     country_list(){
-        if [[ $AUTOMATIC_MODE -ne 1 ]]; then
-            #`reflector --list-countries | sed 's/[0-9]//g' | sed 's/^/"/g' | sed 's/,.*//g' | sed 's/ *$//g'  | sed 's/$/"/g' | sed -e :a -e '$!N; s/\n/ /; ta'`
-            PS3="$prompt1"
-            echo "Select your country:"
-            select country_name in "${countries_name[@]}"; do
-                if contains_element "$country_name" "${countries_name[@]}"; then
-                    country_code=${countries_code[$(( $REPLY - 1 ))]}
-                break
-                else
-                    invalid_option
-                fi
-            done
-        fi
+        #`reflector --list-countries | sed 's/[0-9]//g' | sed 's/^/"/g' | sed 's/,.*//g' | sed 's/ *$//g'  | sed 's/$/"/g' | sed -e :a -e '$!N; s/\n/ /; ta'`
+        PS3="$prompt1"
+        echo "Select your country:"
+        select country_name in "${countries_name[@]}"; do
+            if contains_element "$country_name" "${countries_name[@]}"; then
+                country_code=${countries_code[$(( $REPLY - 1 ))]}
+            break
+            else
+                invalid_option
+            fi
+        done
     }
     print_title "MIRRORLIST - https://wiki.archlinux.org/index.php/Mirrors"
     print_info "This option is a guide to selecting and configuring your mirrors, and a listing of current available mirrors."
     OPTION=n
     while [[ $OPTION != y ]]; do
         country_list
-        read_input_text "Confirm country: $country_name" "y"
+        read_input_text "Confirm country: $country_name"
     done
 
     url="https://www.archlinux.org/mirrorlist/?country=${country_code}&use_mirror_status=on"
@@ -96,9 +86,9 @@ configure_mirrorlist() {
     # Backup and replace current mirrorlist file (if new file is non-zero)
     if [[ -s ${tmpfile} ]]; then
         {   echo " Backing up the original mirrorlist..."
-            mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig; } &&
+            mv -i /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig; } &&
         {   echo " Rotating the new list into place..."
-            mv ${tmpfile} /etc/pacman.d/mirrorlist; }
+            mv -i ${tmpfile} /etc/pacman.d/mirrorlist; }
     else
         echo " Unable to update, could not download list."
     fi
@@ -108,7 +98,7 @@ configure_mirrorlist() {
     rm /etc/pacman.d/mirrorlist.tmp
     # allow global read access (required for non-root yaourt execution)
     chmod +r /etc/pacman.d/mirrorlist
-    # $EDITOR /etc/pacman.d/mirrorlist
+    $EDITOR /etc/pacman.d/mirrorlist
 }
 #}}}
 
@@ -190,87 +180,58 @@ create_partition_scheme() {
     print_info "Partitioning a hard drive allows one to logically divide the available space into sections that can be accessed independently of one another."
     print_warning "Maintain Current does not work with LUKS"
     partition_layouts=("Default" "LVM" "LVM+LUKS" "Maintain Current")
-    if [[ $AUTOMATIC_MODE -eq 1 ]]; then
-        create_partition
-    else
-        PS3="$prompt1"
-        echo -e "Select partition scheme:"
-        select OPT in "${partition_layouts[@]}"; do
-            partition_layout=$OPT
-            case "$REPLY" in
-                1)
-                    create_partition
-                    ;;
-                2)
-                    create_partition
-                    setup_lvm
-                    ;;
-                3)
-                    create_partition
-                    setup_luks
-                    setup_lvm
-                    ;;
-                4)
-                    modprobe dm-mod
-                    vgscan &> /dev/null
-                    vgchange -ay &> /dev/null
-                    ;;
-                *)
-                    invalid_option
-                    ;;
-            esac
-            [[ -n $OPT ]] && break
-        done
-    fi
+    PS3="$prompt1"
+    echo -e "Select partition scheme:"
+    select OPT in "${partition_layouts[@]}"; do
+        partition_layout=$OPT
+        case "$REPLY" in
+            1)
+                create_partition
+                ;;
+            2)
+                create_partition
+                setup_lvm
+                ;;
+            3)
+                create_partition
+                setup_luks
+                setup_lvm
+                ;;
+            4)
+                modprobe dm-mod
+                vgscan &> /dev/null
+                vgchange -ay &> /dev/null
+                ;;
+            *)
+                invalid_option
+                ;;
+        esac
+        [[ -n $OPT ]] && break
+    done
 }
 #}}}
 
 #SETUP PARTITION {{{
 create_partition() {
-    if [[ $AUTOMATIC_MODE -eq 1 ]]; then
-        # create 2 partition: 1 primary, 1 swap
-        # The sed script strips off all the comments so that we can
-        # document what we're doing in-line with the actual commands
-        # Note that a blank line (commented as "defualt" will send a empty
-        # line terminated with a newline to take the fdisk default.
-        sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${device}
-            o   # clear the in memory partition table
-            n   # new partition
-            p   # primary partition
-            1   # partition number 1
-                # default - start at beginning of disk
-            +${primary}     # {primary} Byte parttion
-            n   # new partition
-            p   # primary partition
-            2   # partion number 2
-                # default, start immediately after preceding partition
-                # default, extend partition to end of disk
-            p   # print the in-memory partition table
-            w   # write the partition table
-            q   # and we're done
-EOF
-        echo -e "Partition Done"
-    else
-        apps_list=("cfdisk" "cgdisk" "fdisk" "gdisk" "parted");
-        PS3="$prompt1"
-        echo -e "Select partition program:"
-        select OPT in "${apps_list[@]}"; do
-            if contains_element "$OPT" "${apps_list[@]}"; then
-                select_device
-                case $OPT in
-                    parted)
-                        parted -a opt ${device}
-                        ;;
-                    *)
-                        $OPT ${device}
-                        ;;
-                esac
-                break
-            else
-                invalid_option
-            fi
-        done
-    fi
+    apps_list=("cfdisk" "cgdisk" "fdisk" "gdisk" "parted");
+    PS3="$prompt1"
+    echo -e "Select partition program:"
+    select OPT in "${apps_list[@]}"; do
+        if contains_element "$OPT" "${apps_list[@]}"; then
+            select_device
+            case $OPT in
+                parted)
+                    parted -a opt ${device}
+                    ;;
+                *)
+                    $OPT ${device}
+                    ;;
+            esac
+            break
+        else
+            invalid_option
+        fi
+    done
 }
 #}}}
 
@@ -369,18 +330,16 @@ format_partitions() {
     fi
 
     select_filesystem(){
-        if [[ $AUTOMATIC_MODE -ne 1 ]]; then
-            filesystems_list=( "btrfs" "ext2" "ext3" "ext4" "f2fs" "jfs" "nilfs2" "ntfs" "vfat" "xfs");
-            PS3="$prompt1"
-            echo -e "Select filesystem:\n"
-            select filesystem in "${filesystems_list[@]}"; do
-                if contains_element "${filesystem}" "${filesystems_list[@]}"; then
-                    break
-                else
-                    invalid_option
-                fi
-            done
-        fi
+        filesystems_list=( "btrfs" "ext2" "ext3" "ext4" "f2fs" "jfs" "nilfs2" "ntfs" "vfat" "xfs");
+        PS3="$prompt1"
+        echo -e "Select filesystem:\n"
+        select filesystem in "${filesystems_list[@]}"; do
+            if contains_element "${filesystem}" "${filesystems_list[@]}"; then
+                break
+            else
+                invalid_option
+            fi
+        done
     }
 
     disable_partition(){
@@ -392,7 +351,7 @@ format_partitions() {
     }
 
     format_partition(){
-        read_input_text "Confirm format $1 partition" "y"
+        read_input_text "Confirm format $1 partition"
         if [[ $OPTION == y ]]; then
             [[ -z $3 ]] && select_filesystem || filesystem=$3
             mkfs.${filesystem} $1 \
@@ -408,7 +367,7 @@ format_partitions() {
     }
 
     format_swap_partition(){
-        read_input_text "Confirm format $1 partition" "y"
+        read_input_text "Confirm format $1 partition"
         if [[ $OPTION == y ]]; then
             mkswap $1
             swapon $1
@@ -508,7 +467,7 @@ format_partitions() {
                             read -p "Mountpoint [ex: /home]:" directory
                             [[ $directory == "/boot" ]] && BOOT_MOUNTPOINT=`echo ${partition} | sed 's/[0-9]//'`
                             select_filesystem
-                            read_input_text "Format ${partition} partition" "y"
+                            read_input_text "Format ${partition} partition"
                             if [[ $OPTION == y ]]; then
                                 format_partition "${partition}" "${MOUNTPOINT}${directory}" "${filesystem}"
                             else
@@ -529,7 +488,6 @@ format_partitions() {
         fi
         #check if there is no partitions left
         if [[ ${#partitions_list[@]} -eq 0 && ${partition_name[i]} != swap ]]; then
-            # TODO: add debug info here
             break
         elif [[ ${partition_name[i]} == another ]]; then
             read_input_text "Configure more partitions"
@@ -939,22 +897,6 @@ finish() {
 }
 #}}}
 
-#AUTOMODE {{{
-automatic_mode() {
-    print_title "AUTOMODE"
-    print_info "Create a custom install with all options pre-selected.\nUse this option with care."
-    print_danger "\tUse this mode only if you already know all the option.\n\tYou won't be able to select anything later."
-    read_input_text "Enable Automatic Mode"
-    if [[ $OPTION == y ]]; then
-        # $EDITOR ${ARCH_DIR}/fifo.automode
-        source ${ARCH_DIR}/fifo.automode
-        echo -e "The installation will start now."
-        pause_function
-        AUTOMATIC_MODE=1
-    fi
-}
-#}}}
-
 print_title "https://wiki.archlinux.org/index.php/Arch_Install_Scripts"
 print_info "The Arch Install Scripts are a set of BASH scripts that simplify Arch Installation"
 #pause_function
@@ -962,8 +904,6 @@ check_boot_system
 check_connection
 check_trim
 pacman -Sy
-automatic_mode
-
 while true
 do
     print_title "Archlinux Ultimate Install"
@@ -981,10 +921,9 @@ do
     echo "12) $(mainmenu_item "${checklist[12]}" "Install Bootloader"       "${bootloader}" )"
     echo "13) $(mainmenu_item "${checklist[13]}" "Reboot Password")"
     echo ""
-    echo " q) Quit"
+    echo " d) Done"
     echo ""
-    MAINMENU+=" q"
-    read_input_options "$MAINMENU"
+    read_input_options
     for OPT in ${OPTIONS[@]}; do
         case "$OPT" in
             1)
@@ -1044,7 +983,7 @@ do
                 root_password
                 checklist[13]=1
                 ;;
-            "q")
+            "d")
                 finish
                 ;;
             *)
