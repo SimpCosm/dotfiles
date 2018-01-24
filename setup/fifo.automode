@@ -41,7 +41,9 @@
 #}}}
 
 #Partition Scheme {{{
-
+    device="/dev/sda"   # mount device, change it for your local setting
+    primary="230G"
+    filesystem="ext4"
 #}}}
 
 #Install Base System {{{

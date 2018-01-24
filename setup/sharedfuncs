@@ -97,7 +97,7 @@
     } #}}}
 
     spinny() { #{{{
-        echo -ne "\b${SPIN:i++%${SPIN}:1}"
+        echo -ne "\b${SPIN:i++%${#SPIN}:1}"
     } #}}}
 
     progress() { #{{{
