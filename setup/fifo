@@ -907,6 +907,22 @@ finish() {
 }
 #}}}
 
+#AUTOMODE {{{
+automatic_mode() {
+    print_title "AUTOMODE"
+    print_info "Create a custom install with all options pre-selected.\nUse this option with care."
+    print_danger "\tUse this mode only if you already know all the option.\n\tYou won't be able to select anything later."
+    read_input_text "Enable Automatic Mode"
+    if [[ $OPTION == y ]]; then
+        # $EDITOR ${AUI_DIR}/filo.automode
+        source ${AUI_DIR}/filo.automode
+        echo -e "The installation will start now."
+        pause_function
+        AUTOMATIC_MODE=1
+    fi
+}
+#}}}
+
 print_title "https://wiki.archlinux.org/index.php/Arch_Install_Scripts"
 print_info "The Arch Install Scripts are a set of BASH scripts that simplify Arch Installation"
 #pause_function
