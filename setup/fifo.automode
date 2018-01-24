@@ -47,6 +47,9 @@
 #}}}
 
 #Install Base System {{{
+    VERSION="linux (default)"
+    #VERSION="linux-lts (long term support)"
+    #VERSION="linux-hardened (security features)"
 
 #}}}
 

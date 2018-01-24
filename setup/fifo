@@ -408,7 +408,7 @@ format_partitions() {
     }
 
     format_swap_partition(){
-        read_input_text "Confirm format $1 partition"
+        read_input_text "Confirm format $1 partition" "y"
         if [[ $OPTION == y ]]; then
             mkswap $1
             swapon $1
@@ -508,7 +508,7 @@ format_partitions() {
                             read -p "Mountpoint [ex: /home]:" directory
                             [[ $directory == "/boot" ]] && BOOT_MOUNTPOINT=`echo ${partition} | sed 's/[0-9]//'`
                             select_filesystem
-                            read_input_text "Format ${partition} partition"
+                            read_input_text "Format ${partition} partition" "y"
                             if [[ $OPTION == y ]]; then
                                 format_partition "${partition}" "${MOUNTPOINT}${directory}" "${filesystem}"
                             else
@@ -529,6 +529,7 @@ format_partitions() {
         fi
         #check if there is no partitions left
         if [[ ${#partitions_list[@]} -eq 0 && ${partition_name[i]} != swap ]]; then
+            # TODO: add debug info here
             break
         elif [[ ${partition_name[i]} == another ]]; then
             read_input_text "Configure more partitions"
@@ -540,7 +541,7 @@ format_partitions() {
 #}}}
 
 #INSTALL BASE SYSTEM {{{
-select_linue_version() {
+select_linux_version() {
     print_title "LINUX VERSION"
     version_list=("linux (default)" "linux-lts (long term support)" "linux-hardened (security features)");
     PS3="$prompt1"
